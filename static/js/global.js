@@ -26,4 +26,3 @@ var chartGroup = svg.append("g")
 // Initial Params
 var chosenXAxis = "poverty";
 var chosenYAxis = "obesity";
-

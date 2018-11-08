@@ -47,19 +47,24 @@ function renderYAxes(newYScale, yAxis) {
     return yAxis;
 }
 
-// function used for updating circles group with a transition to
-// new circles
-function renderCircles(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYAxis) {
+///////////////  Update circles group with transition to new circles  ///////////////
+// function used for updating circles group with a transition to new circles
+function renderCircles(circlesLoc, circlesText, newXScale, newYScale, chosenXAxis, chosenYAxis) {
 
-    circlesGroup.transition()
+    circlesLoc.transition()
         .duration(1000)
         .attr("cx", d => newXScale(d[chosenXAxis]))
         .attr("cy", d => newYScale(d[chosenYAxis]));
 
-    return circlesGroup;
+    circlesText.transition()
+        .duration(1000)
+        .attr("dx", d => newXScale(d[chosenXAxis]))
+        .attr("dy", d => newYScale(d[chosenYAxis]) + 5);
+
+    return circlesLoc, circlesText;
 }
 
-// function used for updating circles group with new tooltip
+///////////////  Update circles group with new tooltip  ///////////////
 function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
     if (chosenXAxis === "poverty") {
@@ -91,9 +96,10 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
     circlesGroup.call(toolTip);
 
-    circlesGroup.on("mouseover", function (data) {
-        toolTip.show(data, this);
-    })
+    circlesGroup
+        .on("mouseover", function (data) {
+            toolTip.show(data, this);
+        })
         .on("mouseout", function (data, index) {
             toolTip.hide(data);
         });
